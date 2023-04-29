@@ -1,50 +1,22 @@
-#include <LiquidCrystal_I2C.h>
-#include <Wire.h> 
-
-LiquidCrystal_I2C lcd(0x27, 16, 2);
-long duration;
-long distance;
-// Set the LCD address to 0x27 for a 16 chars and 2 line display
-// SDA - A4
-// SCL - A5
-
-void setup() {
-  // put your setup code here, to run once:
-  lcd.begin();
-  lcd.backlight();
-  Serial.begin(9600);
-  pinMode(7,INPUT); //echo(Reciever)
-  pinMode(8,OUTPUT); //trig(Transmittor)
-
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-  digitalWrite(8,LOW);
-  delayMicroseconds(2);
-  digitalWrite(8,HIGH);
-  delayMicroseconds(10);
-  digitalWrite(8,LOW);
-
-  duration = pulseIn(7,HIGH);
-
-  distance = duration*340/20000;
- lcd.setCursor(0,0);
- lcd.print("Distance:");
-
- lcd.print(distance);
-
- lcd.print("cm");
-
- lcd.setCursor(0,1);
-
- lcd.print("Distance:");
-
- lcd.print(distance/100);
-
- lcd.print("m");
-
- delay(1000);
-
-
-}
+#include <Mouse.h>  
+  
+const int trigpin= 8;  
+const int echopin= 7;  
+long duration;  
+long distance;  
+void setup(){  
+  pinMode(trigpin,OUTPUT);  
+  pinMode(echopin,INPUT);  
+  Serial.begin(9600);  
+}  
+  
+void loop(){  
+  digitalWrite(trigpin,LOW);  
+  delayMicroseconds(2);  
+  digitalWrite(trigpin,HIGH);
+    delayMicroseconds(10);  
+     digitalWrite(trigpin,LOW);  
+  duration=pulseIn(echopin,HIGH);  
+  distance = duration*0.034/2;  
+  Serial.println(distance);  
+}  
